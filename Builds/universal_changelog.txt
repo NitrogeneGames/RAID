@@ -1,0 +1,33 @@
+RAID - Copyright and All rights Reserved under 
+
+Alpha v.0.0.1
+-Game first build
+
+Alpha v.0.0.3
+-Updated to allow 2 weapons with models to be handled
+-Muzzle flash added
+-Smoke Grenade added
+-Weapon and Inventory framework in place
+-Added first level with ocean
+	-Container, fender models
+-Added mp5, ak47, m4a1 models
+-Changed different objects to have more solid box colliders instead of mesh colliders
+-Added official google drive document to track changes and progress
+-Added weapon statistics
+-Recoil System made more smooth and effective over time
+-Imported possible player model for rigging and development
+-Added UI feature that counts ammunition in current gun
+-Ammo now saves based on the gun class specified
+-Reload function now fills ammo on gun class specified to the maximum possible amount
+-More efficient branching of objects pertaining to the player
+
+Alpha v.0.0.4
+-Fixed smoke particle effect to be more think and not as see-through. Better effect overall
+-Fixed recoil being too large on all guns
+-Added .44 Magnum revolver to the game through code and graphically
+-Added the ability to wield secondaries to WeaponController
+-Organized the WeaponController and fixed a bug where weapons were not hiding properly
+-Added another fender to the map (rd_warehouse)
+-Smoothed out concrete texture on the large main map plane (rd_warehouse)
+
+
