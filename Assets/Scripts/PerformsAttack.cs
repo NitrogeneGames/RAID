@@ -65,10 +65,14 @@ public class PerformsAttack : MonoBehaviour {
 			recoil = 0;
 		}
 
+		//Grenade handler
 		if (Input.GetButtonDown ("Fire2")) {
 			GameObject grenade = (GameObject) Instantiate(Grenade_smoke, Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
 			grenade.rigidbody.AddForce(Camera.main.transform.forward * grenadeImpulse, ForceMode.Impulse);
 		}
+
+		if(Input.GetButtonDown
+
 	}
 
 	IEnumerator MuzzleRegister(){

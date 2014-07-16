@@ -29,5 +29,12 @@ Alpha v.0.0.4
 -Organized the WeaponController and fixed a bug where weapons were not hiding properly
 -Added another fender to the map (rd_warehouse)
 -Smoothed out concrete texture on the large main map plane (rd_warehouse)
+-Added sprinting (sprinting now does not allow A-D controls)
+-Added crouching
+-Crouching now overrides sprinting
+-Added smoothing mechanism for crouching (delays crouching time slightly)
+
+Alpha v0.0.5
+-Update "wait" timer in specific recoil/crouch smoothness functions
 
 
