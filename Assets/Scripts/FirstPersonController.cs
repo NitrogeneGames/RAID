@@ -4,9 +4,11 @@ using System.Collections;
 [RequireComponent (typeof(CharacterController))]
 public class FirstPersonController : MonoBehaviour {
 
+	public Texture CrosshairTexture;
 	public float movementSpeed = 5.0f;
 	public float upDownRange = 60.0f;
 	public float jumpSpeed = 10.0f;
+	public static bool isCrosshairHelp = false;
 	bool iCR = false;
 	bool isSprinted;
 	bool sprintProcessed = true;
@@ -21,6 +23,11 @@ public class FirstPersonController : MonoBehaviour {
 	void Start () {
 		Screen.lockCursor = true;
 		characterController = GetComponent<CharacterController> ();
+	}
+
+	void OnGUI(){
+		//enable crosshair
+		GUI.Label(new Rect((Screen.width-CrosshairTexture.width)/2, (Screen.height-CrosshairTexture.height)/2, CrosshairTexture.width, CrosshairTexture.height), CrosshairTexture);﻿
 	}
 	
 	// Update is called once per frame
@@ -76,7 +83,6 @@ public class FirstPersonController : MonoBehaviour {
 
 		verticalRotation -= Input.GetAxis ("Mouse Y");
 		verticalRotation = Mathf.Clamp (verticalRotation, -upDownRange, upDownRange);
-		//verticalRotation -= PerformsAttack.recoil;
 		StartCoroutine (DoRecoil(PerformsAttack.recoil, 5f));
 		Camera.main.transform.localRotation = Quaternion.Euler (verticalRotation, 0, 0);
 
@@ -88,7 +94,6 @@ public class FirstPersonController : MonoBehaviour {
 		} else {
 			sideSpeed = 0f;
 		}
-		Debug.Log (Input.GetAxis ("Horizontal"));
 
 		verticalVelocity += Physics.gravity.y * Time.deltaTime;
 		if (characterController.isGrounded && Input.GetButtonDown ("Jump"))

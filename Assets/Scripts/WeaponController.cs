@@ -6,6 +6,7 @@ public class WeaponController : MonoBehaviour {
 
 	public static List<Weapon> weaponlist;
 	public static Weapon currentPrimary, currentSecondary, displayWeapon;
+	public static int smokeAmt, csAmt, flashAmt, fragAmt = 0;
 	public static bool isReloading = false;
 
 	// Use this for initialization
@@ -82,6 +83,15 @@ public class WeaponController : MonoBehaviour {
 
 	public static void switchWeapon(Weapon switchToWep){
 		displayWeapon = switchToWep;
+	}
+
+	public static Weapon getWeaponByID(string ID){
+		foreach (Weapon w in weaponlist) {
+			if(w.GetID() == ID){
+				return w;
+			}
+		}
+		return null;
 	}
 
 }

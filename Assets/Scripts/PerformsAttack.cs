@@ -6,6 +6,7 @@ public class PerformsAttack : MonoBehaviour {
 	//How many seconds does it take between shots?
 	public float cooldown = 0.2f;
 	public float range = 100.0f;
+	public float pickUpRange = 7.0f;
 	public static float recoil = 0f;
 	public float muzzleTimer = 0.02f;
 	public float grenadeImpulse = 30f;
@@ -14,6 +15,7 @@ public class PerformsAttack : MonoBehaviour {
 	public GameObject DebrisPrefab;
 	GameObject MuzzleFlash;
 	GameObject MuzzleLight;
+	public GameObject M4A1, AK47, MP5, Revolver;
 	public GameObject Grenade_smoke, Grenade_flash, Grenade_CS, Grenade_frag;
 
 	// Use this for initialization
@@ -44,9 +46,6 @@ public class PerformsAttack : MonoBehaviour {
 			Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
 			RaycastHit hitInfo;
 
-			//hitInfo.collider returns the object hit
-			//GameObject go = hitInfo.collider;
-
 			if(Physics.Raycast(ray, out hitInfo, range)){
 				Vector3 hitPoint = hitInfo.point;
 				GameObject go = hitInfo.collider.gameObject;
@@ -66,12 +65,63 @@ public class PerformsAttack : MonoBehaviour {
 		}
 
 		//Grenade handler
-		if (Input.GetButtonDown ("Fire2")) {
+		if (Input.GetButtonDown ("Fire2") && WeaponController.smokeAmt > 0f) {
 			GameObject grenade = (GameObject) Instantiate(Grenade_smoke, Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
 			grenade.rigidbody.AddForce(Camera.main.transform.forward * grenadeImpulse, ForceMode.Impulse);
+			WeaponController.smokeAmt--;
 		}
 
-		if(Input.GetButtonDown
+		if (Input.GetKeyDown (KeyCode.E)) {
+			Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+			RaycastHit hitInfo;
+
+			if(Physics.Raycast (ray, out hitInfo, pickUpRange)){
+				Vector3 hitPoint = hitInfo.point;
+				GameObject go = hitInfo.collider.gameObject;
+				Debug.Log ("Object hit:  " + go.name);
+				if(go.name == "M4A1_Sopmod_Body" && WeaponController.currentPrimary.GetID() != "M4A1"){
+					//Instantiate new weapon from prefab to replace the version on the ground. Use the weapon currently held.
+					if(WeaponController.currentPrimary.GetID () == "AK47") Instantiate (AK47, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+					else if(WeaponController.currentPrimary.GetID () == "MP5") Instantiate (MP5, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+					Destroy (go.transform.parent.gameObject);
+					WeaponController.currentPrimary.getGameObject().SetActive (false);
+					WeaponController.currentPrimary = WeaponController.getWeaponByID("M4A1");
+					WeaponController.currentPrimary.getGameObject().SetActive (true);
+					WeaponController.currentSecondary.getGameObject().SetActive (false);
+					WeaponController.switchWeapon (WeaponController.currentPrimary);
+
+				} else if(go.name == "Ak47Body" && WeaponController.currentPrimary.GetID() != "AK47"){
+					Debug.Log ("AK hit");
+					if(WeaponController.currentPrimary.GetID () == "M4A1") Instantiate (M4A1, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+					else if(WeaponController.currentPrimary.GetID () == "MP5") Instantiate (MP5, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+					Destroy (go.transform.parent.gameObject);
+					WeaponController.currentPrimary.getGameObject().SetActive (false);
+					WeaponController.currentPrimary = WeaponController.getWeaponByID("AK47");
+					WeaponController.currentPrimary.getGameObject().SetActive (true);
+					WeaponController.currentSecondary.getGameObject().SetActive (false);
+					WeaponController.switchWeapon (WeaponController.currentPrimary);
+
+				} else if(go.name == "MP5" && WeaponController.currentPrimary.GetID() != "MP5"){
+					if(WeaponController.currentPrimary.GetID () == "M4A1"){
+						Instantiate (M4A1, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+						//tempgo.transform.LookAt (Camera.main.transform.parent.transform.position);
+						//tempgo.transform.localEulerAngles.Set (go.transform.localEulerAngles.x, go.transform.localEulerAngles.y+90f, go.transform.localEulerAngles.z);
+						//tempgo.transform.rotation=Quaternion.LookRotation(go.transform.position);
+						//tempgo.transform.rotation.SetLookRotation(Quaternion.LookRotation(go.transform.position));
+						//tempgo.transform.rotation = go.transform.rotation;
+					}else if(WeaponController.currentPrimary.GetID () == "AK47") Instantiate (AK47, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+					Destroy (go.transform.parent.gameObject);
+					WeaponController.currentPrimary.getGameObject().SetActive (false);
+					WeaponController.currentPrimary = WeaponController.getWeaponByID("MP5");
+					WeaponController.currentPrimary.getGameObject().SetActive (true);
+					WeaponController.currentSecondary.getGameObject().SetActive (false);
+					WeaponController.switchWeapon (WeaponController.currentPrimary);
+				} else if(go.name == "Smoke Grenade"){
+					Destroy (go.gameObject);
+					WeaponController.smokeAmt++;
+				}
+			}
+		}
 
 	}
 
@@ -82,6 +132,7 @@ public class PerformsAttack : MonoBehaviour {
 		MuzzleLight.SetActive (false);
 		MuzzleFlash.SetActive (false);
 	}
+	
 
 	void PlayFireSound() {
 		//Component[] audlist;

@@ -36,5 +36,12 @@ Alpha v.0.0.4
 
 Alpha v0.0.5
 -Update "wait" timer in specific recoil/crouch smoothness functions
+-Added way to switch weapons by pressing "e" over them
+-Added dropping weapons when picked up another weapon in the same category
+-Added picking up smoke grenades
+-Added limited supply of smoke grenades
+-Fixed bug where objects would fall through the ground because of the box collider was too thin
+-Added crosshair (for bug testing purposes)
+-Added a new logo for the game window and game icon and game loading logos
 
 
