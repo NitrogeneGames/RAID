@@ -44,4 +44,20 @@ Alpha v0.0.5
 -Added crosshair (for bug testing purposes)
 -Added a new logo for the game window and game icon and game loading logos
 
-
+Alpha v0.0.6
+-Added texture for basic GUI slot back
+-Added 2d texture icon for AK47, M4a1, revolver, mp5, and the smoke grenade
+-Added Inventory controls for picking up items
+-Added and patched inventory controls for starting with specific items
+-Fixed bug where items would spawn in the back of the backpack slots
+-Firing a smoke grenade now requies inventory controls to work
+-Added the ability to remove an item from the inventory based on a slot number
+-Added the feature for inventory's backpack's item to replace a specified item in the action slot automatically
+-Item Inventory now opens automatically when picking up an item for X amt of seconds
+-Fixed bug where Inventory management would crash because of multiple coroutines being started
+-Added GUI feature that slowly faded away the inventory when automatically forced open
+-Fixed bug in coroutine that was created from deltatime variance and created GUI flashing
+-Added numbers inside the slots to indicate which number they are selectable by (only in action slots)
+-Removed ammo counter component from the base GUI
+-Added specific ammo counters in primary and secondary weapon slots in Inventory GUI
+-Properly aligned the Inventory GUI for action slots and backpack slots

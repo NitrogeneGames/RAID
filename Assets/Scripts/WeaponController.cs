@@ -6,7 +6,6 @@ public class WeaponController : MonoBehaviour {
 
 	public static List<Weapon> weaponlist;
 	public static Weapon currentPrimary, currentSecondary, displayWeapon;
-	public static int smokeAmt, csAmt, flashAmt, fragAmt = 0;
 	public static bool isReloading = false;
 
 	// Use this for initialization
@@ -20,7 +19,7 @@ public class WeaponController : MonoBehaviour {
 				weaponlist.Add(m4);
 				currentPrimary = m4;
 				m4.getGameObject().SetActive (true);
-				gameObject.GetComponent<InventoryController>().SetSlot(1, "M4A1");
+				gameObject.GetComponent<InventoryController>().SetSlot("M4A1");
 			} else if(child.name == "AK47"){
 				Weapon ak47 = new Weapon("AK47", "primary", child.gameObject, 25, 50f, 0, 4f, 0.15f, 0f);
 				ak47.setBullets (ak47.GetClipSize());
@@ -37,7 +36,7 @@ public class WeaponController : MonoBehaviour {
 				weaponlist.Add(revolver);
 				currentSecondary = revolver;
 				revolver.getGameObject().SetActive (false);
-				gameObject.GetComponent<InventoryController>().SetSlot(1, "REVOLVER");
+				gameObject.GetComponent<InventoryController>().SetSlot("REVOLVER");
 			} else{
 				//Debug.Log ("Too many weapons in WEAPON tree");
 			}
@@ -47,6 +46,7 @@ public class WeaponController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
 		if(Input.GetKeyDown(KeyCode.R)){
 			//if(!isReloading){
 			//	isReloading = true;

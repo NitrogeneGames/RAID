@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PerformsAttack : MonoBehaviour {
 
@@ -10,6 +11,8 @@ public class PerformsAttack : MonoBehaviour {
 	public static float recoil = 0f;
 	public float muzzleTimer = 0.02f;
 	public float grenadeImpulse = 30f;
+	public float inventoryPickUpTime = 5f;
+	bool inventoryActivated = false;
 	float cooldownRemaining = 0.0f;
 
 	public GameObject DebrisPrefab;
@@ -69,10 +72,20 @@ public class PerformsAttack : MonoBehaviour {
 		}
 
 		//Grenade handler
-		if (Input.GetButtonDown ("Fire2") && WeaponController.smokeAmt > 0f) {
-			GameObject grenade = (GameObject) Instantiate(Grenade_smoke, Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
-			grenade.rigidbody.AddForce(Camera.main.transform.forward * grenadeImpulse, ForceMode.Impulse);
-			WeaponController.smokeAmt--;
+		List<Texture> templist = gameObject.GetComponent<InventoryController>().getItemList ();
+		if (templist[4] != null) {
+			if (Input.GetButtonDown ("Fire2") && templist[4].name == "smokegrenadetexture2") {
+				GameObject grenade = (GameObject)Instantiate (Grenade_smoke, Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
+				grenade.rigidbody.AddForce (Camera.main.transform.forward * grenadeImpulse, ForceMode.Impulse);
+				gameObject.GetComponent<InventoryController>().RemoveSlot (4);
+			}
+		}
+
+		if(Input.GetKey(KeyCode.F) || inventoryActivated){
+			gameObject.GetComponent<InventoryController>().inventoryOn = true;
+			if(!inventoryActivated) gameObject.GetComponent<InventoryController>().guiAlpha = 1f;
+		}else{
+			gameObject.GetComponent<InventoryController>().inventoryOn = false;
 		}
 
 		if (Input.GetKeyDown (KeyCode.E)) {
@@ -82,7 +95,6 @@ public class PerformsAttack : MonoBehaviour {
 			if(Physics.Raycast (ray, out hitInfo, pickUpRange)){
 				Vector3 hitPoint = hitInfo.point;
 				GameObject go = hitInfo.collider.gameObject;
-				Debug.Log ("Object hit:  " + go.name);
 				if(go.name == "M4A1_Sopmod_Body" && WeaponController.currentPrimary.GetID() != "M4A1"){
 					//Instantiate new weapon from prefab to replace the version on the ground. Use the weapon currently held.
 					if(WeaponController.currentPrimary.GetID () == "AK47") Instantiate (AK47, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
@@ -93,9 +105,9 @@ public class PerformsAttack : MonoBehaviour {
 					WeaponController.currentPrimary.getGameObject().SetActive (true);
 					WeaponController.currentSecondary.getGameObject().SetActive (false);
 					WeaponController.switchWeapon (WeaponController.currentPrimary);
-					gameObject.GetComponent<InventoryController>().SetSlot(1, "M4A1");
+					gameObject.GetComponent<InventoryController>().SetSlot("M4A1");
+					openInventory();
 				} else if(go.name == "Ak47Body" && WeaponController.currentPrimary.GetID() != "AK47"){
-					Debug.Log ("AK hit");
 					if(WeaponController.currentPrimary.GetID () == "M4A1") Instantiate (M4A1, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
 					else if(WeaponController.currentPrimary.GetID () == "MP5") Instantiate (MP5, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
 					Destroy (go.transform.parent.gameObject);
@@ -104,7 +116,8 @@ public class PerformsAttack : MonoBehaviour {
 					WeaponController.currentPrimary.getGameObject().SetActive (true);
 					WeaponController.currentSecondary.getGameObject().SetActive (false);
 					WeaponController.switchWeapon (WeaponController.currentPrimary);
-					gameObject.GetComponent<InventoryController>().SetSlot(1, "AK47");
+					gameObject.GetComponent<InventoryController>().SetSlot("AK47");
+					openInventory();
 				} else if(go.name == "MP5" && WeaponController.currentPrimary.GetID() != "MP5"){
 					if(WeaponController.currentPrimary.GetID () == "M4A1"){
 						Instantiate (M4A1, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
@@ -115,11 +128,12 @@ public class PerformsAttack : MonoBehaviour {
 					WeaponController.currentPrimary.getGameObject().SetActive (true);
 					WeaponController.currentSecondary.getGameObject().SetActive (false);
 					WeaponController.switchWeapon (WeaponController.currentPrimary);
-					gameObject.GetComponent<InventoryController>().SetSlot(1, "MP5");
+					gameObject.GetComponent<InventoryController>().SetSlot("MP5");
+					openInventory();
 				} else if(go.name == "Smoke Grenade"){
 					Destroy (go.gameObject);
-					gameObject.GetComponent<InventoryController>().SetSlot(4, "SMOKEGRENADE");
-					WeaponController.smokeAmt++;
+					gameObject.GetComponent<InventoryController>().SetSlot("SMOKEGRENADE");
+					openInventory();
 				}
 			}
 		}
@@ -145,12 +159,23 @@ public class PerformsAttack : MonoBehaviour {
 		MuzzleLight.SetActive (false);
 		MuzzleFlash.SetActive (false);
 	}
-	
+
+	void openInventory(){
+		if (!inventoryActivated) {
+			gameObject.GetComponent<InventoryController>().startGUIFade(1f, 0.3f, inventoryPickUpTime);
+			StartCoroutine (AutoInventory ());
+			gameObject.GetComponent<InventoryController>().guiAlpha = 1f;
+		}
+	}
+
+	IEnumerator AutoInventory(){
+		inventoryActivated = true;
+		yield return new WaitForSeconds (inventoryPickUpTime);
+		inventoryActivated = false;
+	}
 
 	void PlayFireSound() {
-		//Component[] audlist;
 		GameObject go = gameObject.transform.GetChild (0).GetChild(0).GetChild(WeaponController.weaponlist.IndexOf(WeaponController.displayWeapon)).gameObject;
-		//Debug.Log (WeaponController.weaponlist.IndexOf (WeaponController.currentEquipped));
 		go.audio.PlayOneShot (go.audio.clip);
 	}
 }
