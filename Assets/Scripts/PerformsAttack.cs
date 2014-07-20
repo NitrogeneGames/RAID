@@ -15,12 +15,16 @@ public class PerformsAttack : MonoBehaviour {
 	public GameObject DebrisPrefab;
 	GameObject MuzzleFlash;
 	GameObject MuzzleLight;
-	public GameObject M4A1, AK47, MP5, Revolver;
+	public GameObject AkModel, M4model, Mp5model, Revolvermodel;
+	public static GameObject M4A1, AK47, MP5, Revolver;
 	public GameObject Grenade_smoke, Grenade_flash, Grenade_CS, Grenade_frag;
 
 	// Use this for initialization
 	void Start () {
-
+		AK47 = AkModel;
+		M4A1 = M4model;
+		MP5 = Mp5model;
+		Revolver = Revolvermodel;
 	}
 
 	public void MuzzleStart(){
@@ -89,7 +93,7 @@ public class PerformsAttack : MonoBehaviour {
 					WeaponController.currentPrimary.getGameObject().SetActive (true);
 					WeaponController.currentSecondary.getGameObject().SetActive (false);
 					WeaponController.switchWeapon (WeaponController.currentPrimary);
-
+					gameObject.GetComponent<InventoryController>().SetSlot(1, "M4A1");
 				} else if(go.name == "Ak47Body" && WeaponController.currentPrimary.GetID() != "AK47"){
 					Debug.Log ("AK hit");
 					if(WeaponController.currentPrimary.GetID () == "M4A1") Instantiate (M4A1, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
@@ -100,15 +104,10 @@ public class PerformsAttack : MonoBehaviour {
 					WeaponController.currentPrimary.getGameObject().SetActive (true);
 					WeaponController.currentSecondary.getGameObject().SetActive (false);
 					WeaponController.switchWeapon (WeaponController.currentPrimary);
-
+					gameObject.GetComponent<InventoryController>().SetSlot(1, "AK47");
 				} else if(go.name == "MP5" && WeaponController.currentPrimary.GetID() != "MP5"){
 					if(WeaponController.currentPrimary.GetID () == "M4A1"){
 						Instantiate (M4A1, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
-						//tempgo.transform.LookAt (Camera.main.transform.parent.transform.position);
-						//tempgo.transform.localEulerAngles.Set (go.transform.localEulerAngles.x, go.transform.localEulerAngles.y+90f, go.transform.localEulerAngles.z);
-						//tempgo.transform.rotation=Quaternion.LookRotation(go.transform.position);
-						//tempgo.transform.rotation.SetLookRotation(Quaternion.LookRotation(go.transform.position));
-						//tempgo.transform.rotation = go.transform.rotation;
 					}else if(WeaponController.currentPrimary.GetID () == "AK47") Instantiate (AK47, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
 					Destroy (go.transform.parent.gameObject);
 					WeaponController.currentPrimary.getGameObject().SetActive (false);
@@ -116,13 +115,27 @@ public class PerformsAttack : MonoBehaviour {
 					WeaponController.currentPrimary.getGameObject().SetActive (true);
 					WeaponController.currentSecondary.getGameObject().SetActive (false);
 					WeaponController.switchWeapon (WeaponController.currentPrimary);
+					gameObject.GetComponent<InventoryController>().SetSlot(1, "MP5");
 				} else if(go.name == "Smoke Grenade"){
 					Destroy (go.gameObject);
+					gameObject.GetComponent<InventoryController>().SetSlot(4, "SMOKEGRENADE");
 					WeaponController.smokeAmt++;
 				}
 			}
 		}
 
+	}
+
+	public static void dropItem(string Name){
+		switch (Name) {
+		case "AK47":
+			Instantiate (AK47, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+			break;
+		case "M4A1": Instantiate (M4A1, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+			break;
+		case "MP5": Instantiate (MP5, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+			break;
+		}
 	}
 
 	IEnumerator MuzzleRegister(){
