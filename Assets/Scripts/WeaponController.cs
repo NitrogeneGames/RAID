@@ -14,36 +14,35 @@ public class WeaponController : MonoBehaviour {
 		weaponlist = new List<Weapon>();
 		foreach (Transform child in go.transform) {
 			if(child.name == "M4A1"){
-				Weapon m4 = new Weapon("M4A1", "primary", child.gameObject, 22, 40f, 0, 3f, 0.2f, 0f);
-				m4.setBullets (m4.GetClipSize());
-				weaponlist.Add(m4);
-				currentPrimary = m4;
-				m4.getGameObject().SetActive (true);
-				gameObject.GetComponent<InventoryController>().SetSlot("M4A1");
+				addWeapon ("M4A1", "primary", child.gameObject, 30, 58f, 20, 3.5f, 0.06667f, 7.5f, true, true);
 			} else if(child.name == "AK47"){
-				Weapon ak47 = new Weapon("AK47", "primary", child.gameObject, 25, 50f, 0, 4f, 0.15f, 0f);
-				ak47.setBullets (ak47.GetClipSize());
-				weaponlist.Add(ak47);
-				ak47.getGameObject().SetActive (false);
+				addWeapon ("AK47", "primary", child.gameObject, 30, 70f, 40, 5f, 0.1f, 9.8f, false, false);
+			} else if(child.name == "m16a4"){
+				addWeapon ("G36C", "primary", child.gameObject, 30, 61f, 14, 3.3f, 0.08f, 6.2f, false, false);
+			} else if(child.name == "SCARL"){
+				addWeapon ("SCARL", "primary", child.gameObject, 30, 64f, 24, 2f, 0.96f, 0f, false, false);
 			} else if(child.name == "MP5"){
-				Weapon mp5 = new Weapon("MP5", "primary", child.gameObject, 40, 15, 0, 0.7f, 0.6f, 0f);
-				mp5.setBullets (mp5.GetClipSize());
-				weaponlist.Add(mp5);
-				mp5.getGameObject().SetActive (false);
+				addWeapon("MP5", "primary", child.gameObject, 30, 68f, 50, 2.3f, 0.06667f, 5.5f, false, false);
 			} else if (child.name == "44Revolver"){
-				Weapon revolver = new Weapon("REVOLVER", "secondary", child.gameObject, 40, 15, 0, 0.7f, 0.6f, 0f);
-				revolver.setBullets (revolver.GetClipSize());
-				weaponlist.Add(revolver);
-				currentSecondary = revolver;
-				revolver.getGameObject().SetActive (false);
-				gameObject.GetComponent<InventoryController>().SetSlot("REVOLVER");
+				addWeapon("REVOLVER", "secondary", child.gameObject, 6, 78f, 37, 11f, 0.8f, 2.3f, false, true);
 			} else{
 				//Debug.Log ("Too many weapons in WEAPON tree");
 			}
 		}
 		displayWeapon = currentPrimary;
 	}
-	
+
+	void addWeapon(string ID, string slot, GameObject child, int clipsize, float damage, int accuracy, float recoil, float firerate, float mass, bool start, bool have){
+		Weapon temp = new Weapon(ID, slot, child, clipsize, damage, accuracy, recoil, firerate, mass);
+		temp.setBullets (temp.GetClipSize ());
+		weaponlist.Add (temp);
+		if(start) temp.getGameObject().SetActive (true);
+		else temp.getGameObject().SetActive (false);
+		if(have) gameObject.GetComponent<InventoryController>().SetSlot(ID);
+		if (have && slot == "primary") currentPrimary = temp;
+		else if (have && slot == "secondary") currentSecondary = temp;
+	}
+
 	// Update is called once per frame
 	void Update () {
 

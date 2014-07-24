@@ -18,8 +18,8 @@ public class PerformsAttack : MonoBehaviour {
 	public GameObject DebrisPrefab;
 	GameObject MuzzleFlash;
 	GameObject MuzzleLight;
-	public GameObject AkModel, M4model, Mp5model, Revolvermodel;
-	public static GameObject M4A1, AK47, MP5, Revolver;
+	public GameObject AkModel, M4model, Mp5model, Revolvermodel, SCARLmodel, G36Cmodel;
+	public static GameObject M4A1, AK47, MP5, Revolver, SCARL, G36C;
 	public GameObject Grenade_smoke, Grenade_flash, Grenade_CS, Grenade_frag;
 
 	// Use this for initialization
@@ -28,11 +28,13 @@ public class PerformsAttack : MonoBehaviour {
 		M4A1 = M4model;
 		MP5 = Mp5model;
 		Revolver = Revolvermodel;
+		SCARL = SCARLmodel;
+		G36C = G36Cmodel;
 	}
 
 	public void MuzzleStart(){
-		MuzzleFlash = gameObject.transform.GetChild (0).GetChild (0).GetChild(WeaponController.weaponlist.Count).GetChild (0).gameObject;
-		MuzzleLight = gameObject.transform.GetChild (0).GetChild (0).GetChild(WeaponController.weaponlist.Count).GetChild (1).gameObject;
+		MuzzleFlash = gameObject.transform.GetChild (0).GetChild(0).FindChild ("Weapon Tip").GetChild (0).gameObject;
+		MuzzleLight = gameObject.transform.GetChild (0).GetChild(0).FindChild ("Weapon Tip").GetChild (1).gameObject;
 		MuzzleLight.SetActive(false);
 		MuzzleFlash.SetActive(false);
 	}
@@ -78,6 +80,10 @@ public class PerformsAttack : MonoBehaviour {
 				GameObject grenade = (GameObject)Instantiate (Grenade_smoke, Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
 				grenade.rigidbody.AddForce (Camera.main.transform.forward * grenadeImpulse, ForceMode.Impulse);
 				gameObject.GetComponent<InventoryController>().RemoveSlot (4);
+			} else if (Input.GetButtonDown ("Fire2") && templist[4].name == "dm51_a1_diff_spc") {
+				GameObject grenade = (GameObject)Instantiate (Grenade_frag, Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
+				grenade.rigidbody.AddForce (Camera.main.transform.forward * grenadeImpulse, ForceMode.Impulse);
+				gameObject.GetComponent<InventoryController>().RemoveSlot (4);
 			}
 		}
 
@@ -97,47 +103,48 @@ public class PerformsAttack : MonoBehaviour {
 				GameObject go = hitInfo.collider.gameObject;
 				if(go.name == "M4A1_Sopmod_Body" && WeaponController.currentPrimary.GetID() != "M4A1"){
 					//Instantiate new weapon from prefab to replace the version on the ground. Use the weapon currently held.
-					if(WeaponController.currentPrimary.GetID () == "AK47") Instantiate (AK47, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
-					else if(WeaponController.currentPrimary.GetID () == "MP5") Instantiate (MP5, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
-					Destroy (go.transform.parent.gameObject);
-					WeaponController.currentPrimary.getGameObject().SetActive (false);
-					WeaponController.currentPrimary = WeaponController.getWeaponByID("M4A1");
-					WeaponController.currentPrimary.getGameObject().SetActive (true);
-					WeaponController.currentSecondary.getGameObject().SetActive (false);
-					WeaponController.switchWeapon (WeaponController.currentPrimary);
-					gameObject.GetComponent<InventoryController>().SetSlot("M4A1");
-					openInventory();
+					switchPrimaryWeapon (go.transform.parent.gameObject, "M4A1");
 				} else if(go.name == "Ak47Body" && WeaponController.currentPrimary.GetID() != "AK47"){
-					if(WeaponController.currentPrimary.GetID () == "M4A1") Instantiate (M4A1, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
-					else if(WeaponController.currentPrimary.GetID () == "MP5") Instantiate (MP5, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
-					Destroy (go.transform.parent.gameObject);
-					WeaponController.currentPrimary.getGameObject().SetActive (false);
-					WeaponController.currentPrimary = WeaponController.getWeaponByID("AK47");
-					WeaponController.currentPrimary.getGameObject().SetActive (true);
-					WeaponController.currentSecondary.getGameObject().SetActive (false);
-					WeaponController.switchWeapon (WeaponController.currentPrimary);
-					gameObject.GetComponent<InventoryController>().SetSlot("AK47");
-					openInventory();
+					switchPrimaryWeapon (go.transform.parent.gameObject, "AK47");
 				} else if(go.name == "MP5" && WeaponController.currentPrimary.GetID() != "MP5"){
-					if(WeaponController.currentPrimary.GetID () == "M4A1"){
-						Instantiate (M4A1, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
-					}else if(WeaponController.currentPrimary.GetID () == "AK47") Instantiate (AK47, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
-					Destroy (go.transform.parent.gameObject);
-					WeaponController.currentPrimary.getGameObject().SetActive (false);
-					WeaponController.currentPrimary = WeaponController.getWeaponByID("MP5");
-					WeaponController.currentPrimary.getGameObject().SetActive (true);
-					WeaponController.currentSecondary.getGameObject().SetActive (false);
-					WeaponController.switchWeapon (WeaponController.currentPrimary);
-					gameObject.GetComponent<InventoryController>().SetSlot("MP5");
-					openInventory();
+					switchPrimaryWeapon (go.transform.parent.gameObject, "MP5");
+				} else if(go.name == "ScarLpart1" && WeaponController.currentPrimary.GetID() != "SCARL"){
+					switchPrimaryWeapon (go.transform.parent.transform.parent.gameObject, "SCARL");
+				} else if(go.name == "Cylinder001" && WeaponController.currentPrimary.GetID() != "G36C"){
+					switchPrimaryWeapon (go.transform.parent.gameObject, "G36C");
 				} else if(go.name == "Smoke Grenade"){
 					Destroy (go.gameObject);
 					gameObject.GetComponent<InventoryController>().SetSlot("SMOKEGRENADE");
+					openInventory();
+				} else if(go.name == "bodyDM" || go.name == "splintDM" || go.name == "spoonDM" || go.name == "capDM" || go.name == "springDM"){
+					//frag grenade parts (bones)
+					Destroy (go.transform.parent.gameObject);
+					gameObject.GetComponent<InventoryController>().SetSlot("DM51A1");
+					openInventory();
+				} else if(go.name == "CS Grenade"){
+					Destroy (go.gameObject);
+					gameObject.GetComponent<InventoryController>().SetSlot("CSGRENADE");
 					openInventory();
 				}
 			}
 		}
 
+	}
+
+	void switchPrimaryWeapon(GameObject parentgo, string replacementgun){
+		if(WeaponController.currentPrimary.GetID () == "M4A1") Instantiate (M4A1, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+		else if(WeaponController.currentPrimary.GetID () == "AK47") Instantiate (AK47, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+		else if(WeaponController.currentPrimary.GetID () == "MP5") Instantiate (MP5, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+		else if(WeaponController.currentPrimary.GetID () == "SCARL") Instantiate (SCARL, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+		else if(WeaponController.currentPrimary.GetID () == "G36C") Instantiate (G36C, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+		Destroy (parentgo);
+		WeaponController.currentPrimary.getGameObject().SetActive (false);
+		WeaponController.currentPrimary = WeaponController.getWeaponByID(replacementgun);
+		WeaponController.currentPrimary.getGameObject().SetActive (true);
+		WeaponController.currentSecondary.getGameObject().SetActive (false);
+		WeaponController.switchWeapon (WeaponController.currentPrimary);
+		gameObject.GetComponent<InventoryController>().SetSlot(replacementgun);
+		openInventory();
 	}
 
 	public static void dropItem(string Name){

@@ -21,7 +21,7 @@ public class Grenade_smoke : MonoBehaviour {
 			if(smokelifespan <= 0.0f){
 				tempExplosion.particleEmitter.emit = false;
 				Destroy (gameObject);
-				if(tempExplosion.particleEmitter.particleCount == 0){
+				if(tempExplosion.particleEmitter.particleCount <= 0){
 					Destroy (tempExplosion);
 				}
 			}

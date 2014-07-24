@@ -61,3 +61,11 @@ Alpha v0.0.6
 -Removed ammo counter component from the base GUI
 -Added specific ammo counters in primary and secondary weapon slots in Inventory GUI
 -Properly aligned the Inventory GUI for action slots and backpack slots
+
+Alpha v0.0.7
+-Added the universal sound pack for use in SFX
+-Updated the fire sounds for the mp5, ak47, and revolver with the sound pack
+-Added skins with bones for the SCAR-L, 870MCS shotgun, M9 beretta, m19A4, glock-18c, and dm51A1 frag grenade
+-Added a bigger explosion model for the frag grenade
+-Added a particle effect for the CS gas grenade (with smoke grenade script)
+-Added a 3d and 2d texture for CS gas grenade
