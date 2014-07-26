@@ -40,7 +40,7 @@ public class FirstPersonController : MonoBehaviour {
 			if((!crouchProcessed) && (!iCR)){
 				crouchProcessed = true;
 				iCR = true;
-				StartCoroutine (DoCrouch(-.5f, 50));
+				StartCoroutine (DoCrouch(-.5f, 12));
 			}
 		} else if (Input.GetKey (KeyCode.LeftShift)) {
 			movementScalar = 1.3f;
@@ -49,7 +49,7 @@ public class FirstPersonController : MonoBehaviour {
 			if((crouchProcessed) && (!iCR)){
 				crouchProcessed = false;
 				iCR = true;
-				StartCoroutine (DoCrouch(.5f,50));
+				StartCoroutine (DoCrouch(.5f,12));
 			}
 		} else{
 			movementScalar = 1f;
@@ -58,7 +58,7 @@ public class FirstPersonController : MonoBehaviour {
 			if((crouchProcessed) && (!iCR)){
 				crouchProcessed = false;
 				iCR = true;
-				StartCoroutine (DoCrouch(.5f, 50));
+				StartCoroutine (DoCrouch(.5f, 12));
 			}
 		}
 
@@ -116,7 +116,7 @@ public class FirstPersonController : MonoBehaviour {
 	}
 	
 	IEnumerator DoCrouch(float amt, int smoothness){
-		float totaltime = .01F;
+		float totaltime = .005F;
 		for(int i = 0; i<smoothness; i++) {
 			changeCrouch((float) (amt/smoothness));
 			yield return wait((float) (totaltime/smoothness));
