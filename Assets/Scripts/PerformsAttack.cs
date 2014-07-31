@@ -108,7 +108,7 @@ public class PerformsAttack : MonoBehaviour {
 					switchPrimaryWeapon (go.transform.parent.gameObject, "AK47");
 				} else if(go.name == "MP5" && WeaponController.currentPrimary.GetID() != "MP5"){
 					switchPrimaryWeapon (go.transform.parent.gameObject, "MP5");
-				} else if(go.name == "ScarLpart1" && WeaponController.currentPrimary.GetID() != "SCARL"){
+				} else if(go.name == "scarLpart1" && WeaponController.currentPrimary.GetID() != "SCARL"){
 					switchPrimaryWeapon (go.transform.parent.transform.parent.gameObject, "SCARL");
 				} else if(go.name == "Cylinder001" && WeaponController.currentPrimary.GetID() != "G36C"){
 					switchPrimaryWeapon (go.transform.parent.gameObject, "G36C");
