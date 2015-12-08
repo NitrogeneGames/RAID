@@ -78,11 +78,11 @@ public class PerformsAttack : MonoBehaviour {
 		if (templist[4] != null) {
 			if (Input.GetButtonDown ("Fire2") && templist[4].name == "smokegrenadetexture2") {
 				GameObject grenade = (GameObject)Instantiate (Grenade_smoke, Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
-				grenade.rigidbody.AddForce (Camera.main.transform.forward * grenadeImpulse, ForceMode.Impulse);
+				grenade.GetComponent<Rigidbody>().AddForce (Camera.main.transform.forward * grenadeImpulse, ForceMode.Impulse);
 				gameObject.GetComponent<InventoryController>().RemoveSlot (4);
 			} else if (Input.GetButtonDown ("Fire2") && templist[4].name == "dm51_a1_diff_spc") {
 				GameObject grenade = (GameObject)Instantiate (Grenade_frag, Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
-				grenade.rigidbody.AddForce (Camera.main.transform.forward * grenadeImpulse, ForceMode.Impulse);
+				grenade.GetComponent<Rigidbody>().AddForce (Camera.main.transform.forward * grenadeImpulse, ForceMode.Impulse);
 				gameObject.GetComponent<InventoryController>().RemoveSlot (4);
 			}
 		}
@@ -183,6 +183,6 @@ public class PerformsAttack : MonoBehaviour {
 
 	void PlayFireSound() {
 		GameObject go = gameObject.transform.GetChild (0).GetChild(0).GetChild(WeaponController.weaponlist.IndexOf(WeaponController.displayWeapon)).gameObject;
-		go.audio.PlayOneShot (go.audio.clip);
+		go.GetComponent<AudioSource>().PlayOneShot (go.GetComponent<AudioSource>().clip);
 	}
 }
