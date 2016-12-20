@@ -7,8 +7,6 @@ Project("{CF91513C-6FC6-3CEB-E4B6-3A6647238D6D}") = "RAID", "Assembly-CSharp.csp
 EndProject
 Project("{CF91513C-6FC6-3CEB-E4B6-3A6647238D6D}") = "RAID", "Assembly-CSharp-Editor.csproj", "{49BC9955-048D-BDC8-54FB-EB825241EE6D}"
 EndProject
-Project("{CF91513C-6FC6-3CEB-E4B6-3A6647238D6D}") = "RAID", "Assembly-UnityScript-firstpass.unityproj", "{780013C9-869E-BD54-148B-EBEAF531D831}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,10 +25,6 @@ Global
 		{49BC9955-048D-BDC8-54FB-EB825241EE6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49BC9955-048D-BDC8-54FB-EB825241EE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49BC9955-048D-BDC8-54FB-EB825241EE6D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{780013C9-869E-BD54-148B-EBEAF531D831}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{780013C9-869E-BD54-148B-EBEAF531D831}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{780013C9-869E-BD54-148B-EBEAF531D831}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{780013C9-869E-BD54-148B-EBEAF531D831}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,5 +47,4 @@ Global
 		$3.inheritsScope = text/plain
 		$3.scope = text/plain
 	EndGlobalSection
-
 EndGlobal
